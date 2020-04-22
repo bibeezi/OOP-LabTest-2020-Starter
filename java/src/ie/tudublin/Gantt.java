@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.data.Table;
 import processing.data.TableRow;
+import processing.event.MouseEvent;
 
 public class Gantt extends PApplet
 {	
@@ -20,12 +21,17 @@ public class Gantt extends PApplet
 	float textY;
 	int textSpace;
 
+	float rectX;
+	float rectY;
 	int rectH;
 	float colour;
 	float cOffset;
 
 	float hitTop;
+	float hitbox;
 
+	int selectedL;
+	int selectedR;
 	
 	public void settings()
 	{
@@ -42,6 +48,11 @@ public class Gantt extends PApplet
 		rectH = 35;
 		colour = 0;
 		cOffset = 255 / 9;
+
+		hitbox = 10;
+
+		selectedL = -1;
+		selectedR = -1;
 	}
 
 	// Populate the ArrayList 'tasks'
@@ -52,7 +63,6 @@ public class Gantt extends PApplet
 		for(TableRow row : t.rows())
 		{
 			Task task = new Task(row);
-
 			tasks.add(task);
 		}
 	}
@@ -122,13 +132,15 @@ public class Gantt extends PApplet
 	}
 	
 	public void mousePressed()
-	{
-		float hitbox = 20;
-		
+	{	
+		selectedL = -1;
+		selectedR = -1;
+
 		hitTop = height * 0.15f;
 
 		for(int i = 0; i < tasks.size(); i++)
         {
+			
 			Task task = tasks.get(i);
 
 			float left = map(task.getStart(), 1, 30, textX, textX + (29 * textSpace));
@@ -137,12 +149,14 @@ public class Gantt extends PApplet
             if(mouseX > left && mouseX < left + hitbox && 
                mouseY > hitTop - (rectH / 2) && mouseY < hitTop + (rectH / 2))
             {
-                println("Mouse Pressed L");
+				println("Mouse Pressed L");
+				selectedL = i;
 			}
 			else if(mouseX > right - hitbox && mouseX < right && 
 			mouseY > hitTop - (rectH / 2) && mouseY < hitTop + (rectH / 2))
 			{
 				println("Mouse Pressed R");
+				selectedR = i;
 			}
 			
 			hitTop += taskSpace;
@@ -151,7 +165,42 @@ public class Gantt extends PApplet
 
 	public void mouseDragged()
 	{
-		println("Mouse Dragged");
+		int size;
+
+		if(selectedL != -1)
+		{
+			Task task = tasks.get(selectedL);
+
+			float left = map(task.getStart(), 1, 30, textX, textX + (29 * textSpace));
+
+			if(mouseX < left && mouseX > textX)
+			{
+				size = task.getStart() - 1;
+				task.setStart(size);
+			}
+			else if(task.getEnd() - task.getStart() != 1 && mouseX > textX && mouseX > left + textSpace)
+			{
+				size = task.getStart() + 1;
+				task.setStart(size);
+			}
+		}
+		else if(selectedR != -1)
+		{
+			Task task = tasks.get(selectedR);
+
+			float right = map(task.getEnd(), 1, 30, textX, textX + (29 * textSpace));
+
+			if(mouseX > right && mouseX < textX + (29 * textSpace))
+			{
+				size = task.getEnd() + 1;
+				task.setEnd(size);
+			}
+			else if(task.getEnd() - task.getStart() != 1 && mouseX < textX + (29 * textSpace) && mouseX < right - textSpace)
+			{
+				size = task.getEnd() - 1;
+				task.setEnd(size);
+			}
+		}
 	}
 
 	
@@ -161,14 +210,13 @@ public class Gantt extends PApplet
 		loadTasks();
 		printTasks();
 
-		background(0);
-
 		colorMode(HSB);
 
 	}
 	
 	public void draw()
 	{
+		background(0);
 		displayTasks();
 	}
 }
