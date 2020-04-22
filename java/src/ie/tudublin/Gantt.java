@@ -10,10 +10,38 @@ public class Gantt extends PApplet
 {	
 	// ArrayList declaration
 	ArrayList<Task> tasks = new ArrayList<Task>();
+
+	// displayTask method variables
+	float taskX;
+	float taskY;
+	int taskSpace;
+
+	float textX; 
+	float textY;
+	int textSpace;
+
+	int rectH;
+	float colour;
+	float cOffset;
+
+	float hitTop;
+
 	
 	public void settings()
 	{
 		size(800, 600);
+
+		taskX = width * 0.05f;
+		taskY = height * 0.15f;
+		taskSpace = 40;
+
+		textX = taskX * 3.5f; 
+		textY = height * 0.08f;
+		textSpace = 21;
+
+		rectH = 35;
+		colour = 0;
+		cOffset = 255 / 9;
 	}
 
 	// Populate the ArrayList 'tasks'
@@ -41,11 +69,7 @@ public class Gantt extends PApplet
 	// display tasks as in the video
 	public void displayTasks()
 	{
-		// Task names variables
-		float taskX = width * 0.05f;
-		float taskY = height * 0.15f;
-		int taskSpace = 40;
-
+		// Task names
 		for(Task task : tasks)
 		{
 			textAlign(LEFT, CENTER);
@@ -54,12 +78,7 @@ public class Gantt extends PApplet
 			taskY += taskSpace;
 		}
 
-
-		// Vetrtical lines and numbers
-		float textX = taskX * 3.5f; 
-		float textY = height * 0.08f;
-		int textSpace = 21;
-
+		// Vertical lines and numbers
 		for(int count = 1; count < 31; count++)
 		{
 			if(count % 2 == 0)
@@ -79,17 +98,11 @@ public class Gantt extends PApplet
 			textX += textSpace;
 		}
 
-
-		// Rectangles
-		int rectH = 35;
-		float colour = 0;
-		float cOffset = 255 / 9;
-
 		// reset necessary variables
 		taskY = height * 0.15f;
 		textX = taskX * 3.5f; 
 
-
+		// Rectangles
 		for(Task task : tasks)
 		{
 			fill(colour, 255, 255);
@@ -102,11 +115,32 @@ public class Gantt extends PApplet
 			taskY += taskSpace;
 			colour += cOffset;
 		}
+
+		taskY = height * 0.15f;
+		colour = 0;
 	}
 	
 	public void mousePressed()
 	{
-		println("Mouse pressed");	
+		float hitbox = 20;
+		
+		hitTop = height * 0.15f;
+
+		for(int i = 0; i < tasks.size(); i++)
+        {
+			Task task = tasks.get(i);
+
+			float left = map(task.getStart(), 1, 30, textX, textX + (29 * textSpace));
+
+            if(mouseX > left && mouseX < left + hitbox && 
+               mouseY > hitTop - (rectH / 2) && mouseY < hitTop + rectH)
+            {
+                println("Mouse Pressed L");	
+			}
+			
+			hitTop += taskSpace;
+        }
+		
 	}
 
 	public void mouseDragged()
