@@ -4,6 +4,7 @@ import processing.data.TableRow;
 
 // Encapsulating class
 public class Task {
+
     // Private fields
     private String task;
     private int start;
@@ -46,7 +47,7 @@ public class Task {
     // Constructor that takes a TableRow as a parameter
     public Task(TableRow tr)
     {
-        this(tr.getString("task"), tr.getInt("start"), tr.getInt("end"));
+        this(tr.getString("Task"), tr.getInt("Start"), tr.getInt("End"));
     }
 
     // toString() method
