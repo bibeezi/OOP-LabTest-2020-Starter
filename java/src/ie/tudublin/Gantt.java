@@ -29,13 +29,28 @@ public class Gantt extends PApplet
 		}
 	}
 
-	// Prints the elements of the ArrayList 'tasks'
-	//  on the console
+	// Prints the elements of the ArrayList 'tasks' on the console
 	public void printTasks()
 	{
 		for(Task task : tasks)
 		{
 			println(task);
+		}
+	}
+
+	// display tasks as in the video
+	public void displayTasks()
+	{
+		float border = width * 0.05f;
+		float taskY = height * 0.2f;
+		int count = 1;
+
+		for(Task task : tasks)
+		{
+			textAlign(LEFT, CENTER);
+			fill(255);
+			text(task.getTask(), border, map(count, 1, tasks.size(), taskY, height - taskY));
+			count++;
 		}
 	}
 	
@@ -55,10 +70,14 @@ public class Gantt extends PApplet
 	{
 		loadTasks();
 		printTasks();
+
+		colorMode(HSB);
 	}
 	
 	public void draw()
 	{			
 		background(0);
+
+		displayTasks();
 	}
 }
