@@ -53,6 +53,6 @@ public class Task {
     // toString() method
     @Override
     public String toString() {
-        return "Task [end=" + end + ", start=" + start + ", task=" + task + "]";
+        return "Task [Task = " + task + ", Start = " + start + ", End = " + end + "]";
     }
 }
