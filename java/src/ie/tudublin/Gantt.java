@@ -41,16 +41,40 @@ public class Gantt extends PApplet
 	// display tasks as in the video
 	public void displayTasks()
 	{
-		float border = width * 0.05f;
-		float taskY = height * 0.2f;
+		float taskX = width * 0.05f;
+		float taskY = height * 0.12f;
 		int count = 1;
 
 		for(Task task : tasks)
 		{
 			textAlign(LEFT, CENTER);
-			fill(255);
-			text(task.getTask(), border, map(count, 1, tasks.size(), taskY, height - taskY));
+			fill(0, 0, 255);
+			text(task.getTask(), taskX, map(count, 1, tasks.size(), taskY, height - taskY));
 			count++;
+		}
+
+
+		// Vetrtical lines and numbers
+		float textX = taskX * 3.5f;
+		float textY = height * 0.08f;
+		int textSpace = 20;
+
+		for(count = 1; count < 31; count++)
+		{
+			if(count % 2 == 0)
+			{
+				stroke(255);
+			}
+			else
+			{
+				stroke(100);
+			}
+
+			line(textX, textY, textX, height - textY);
+			
+			textAlign(CENTER, CENTER);
+			text(count, textX, textY - textSpace);
+			textX += textSpace;
 		}
 	}
 	
