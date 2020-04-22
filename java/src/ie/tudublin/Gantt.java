@@ -41,25 +41,26 @@ public class Gantt extends PApplet
 	// display tasks as in the video
 	public void displayTasks()
 	{
+		// Task names
 		float taskX = width * 0.05f;
-		float taskY = height * 0.12f;
-		int count = 1;
+		float taskY = height * 0.15f;
+		int taskSpace = 40;
 
 		for(Task task : tasks)
 		{
 			textAlign(LEFT, CENTER);
 			fill(0, 0, 255);
-			text(task.getTask(), taskX, map(count, 1, tasks.size(), taskY, height - taskY));
-			count++;
+			text(task.getTask(), taskX, taskY);
+			taskY += taskSpace;
 		}
 
 
 		// Vetrtical lines and numbers
 		float textX = taskX * 3.5f;
 		float textY = height * 0.08f;
-		int textSpace = 20;
+		int textSpace = 21;
 
-		for(count = 1; count < 31; count++)
+		for(int count = 1; count < 31; count++)
 		{
 			if(count % 2 == 0)
 			{
@@ -74,6 +75,7 @@ public class Gantt extends PApplet
 			
 			textAlign(CENTER, CENTER);
 			text(count, textX, textY - textSpace);
+
 			textX += textSpace;
 		}
 	}
