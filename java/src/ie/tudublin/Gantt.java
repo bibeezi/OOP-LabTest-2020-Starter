@@ -110,7 +110,8 @@ public class Gantt extends PApplet
 			rect(map(task.getStart(), 1, 30, textX, textX + (29 * textSpace)),
 				 taskY - (rectH / 2),
 				 (task.getEnd() - task.getStart()) * textSpace,
-				 rectH, 5);
+				 rectH,
+				 5);
 
 			taskY += taskSpace;
 			colour += cOffset;
@@ -131,21 +132,26 @@ public class Gantt extends PApplet
 			Task task = tasks.get(i);
 
 			float left = map(task.getStart(), 1, 30, textX, textX + (29 * textSpace));
+			float right = map(task.getEnd(), 1, 30, textX, textX + (29 * textSpace));
 
             if(mouseX > left && mouseX < left + hitbox && 
-               mouseY > hitTop - (rectH / 2) && mouseY < hitTop + rectH)
+               mouseY > hitTop - (rectH / 2) && mouseY < hitTop + (rectH / 2))
             {
-                println("Mouse Pressed L");	
+                println("Mouse Pressed L");
+			}
+			else if(mouseX > right - hitbox && mouseX < right && 
+			mouseY > hitTop - (rectH / 2) && mouseY < hitTop + (rectH / 2))
+			{
+				println("Mouse Pressed R");
 			}
 			
 			hitTop += taskSpace;
         }
-		
 	}
 
 	public void mouseDragged()
 	{
-		println("Mouse dragged");
+		println("Mouse Dragged");
 	}
 
 	
@@ -155,13 +161,14 @@ public class Gantt extends PApplet
 		loadTasks();
 		printTasks();
 
+		background(0);
+
 		colorMode(HSB);
+
 	}
 	
 	public void draw()
-	{			
-		background(0);
-
+	{
 		displayTasks();
 	}
 }
